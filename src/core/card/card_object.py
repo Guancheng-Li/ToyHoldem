@@ -25,7 +25,10 @@ class CardJoker(enum.Enum):
 
 class Card:
     """A card."""
-    def __init__(self, color, point, joker=None):
+    def __init__(self, color: CardColor, point: int, joker=None):
+        self._color = None
+        self._point = None
+        self._joker = None
         if color is not None:
             assert isinstance(color, CardColor)
             self._color = color
@@ -79,11 +82,11 @@ def CardPack():
         return cards
 
 
-def sort_card_by_point(cards: List[Card], desend=False) -> List[Card]:
+def sort_card_by_point(cards: List[Card], descend=False) -> List[Card]:
     joker_group = [card for card in cards if card.is_joker()]
     joker_group.sort(key=lambda e: e.joker_type)
     point_group = [card for card in cards if not card.is_joker()]
     point_group.sort(key=lambda e: e.point())
-    if desend:
+    if descend:
         return joker_group + reversed(point_group)
     return joker_group + point_group

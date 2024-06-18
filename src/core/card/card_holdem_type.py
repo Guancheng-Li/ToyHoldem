@@ -19,7 +19,7 @@ class CardType(enum.Enum):
     STRAIGHT = 4  # 顺子
     FLUSH = 5  # 同花
     FULL_HOUSE = 6  # 葫芦（三条带一对）
-    FOUR_OF_A_KIND= 7  # 四条（金刚）
+    FOUR_OF_A_KIND = 7  # 四条（金刚）
     STRAIGHT_FLUSH = 8  # 同花顺
     ROYAL_FLUSH = 9  # 皇家同花顺
 
@@ -27,19 +27,19 @@ class CardType(enum.Enum):
 def card_type_of_5_cards(cards: List[Card]) -> CardType:
     """Judge type of 5 cards."""
     assert len(cards) == 5, 'Cannot judge cards type with cards num not equal to 5'
-    cards = sort_card_by_point(cards)
-    card_point_cnt = group_by_point(cards)
-    if _is_royal_flush(cards):
+    sorted_cards = sort_card_by_point(cards)
+    card_point_cnt = group_by_point(sorted_cards)
+    if _is_royal_flush(sorted_cards):
         return CardType.ROYAL_FLUSH
-    elif _is_straight_basic(cards):
+    elif _is_straight_flush_basic(sorted_cards):
         return CardType.STRAIGHT_FLUSH
     elif _is_four_of_a_kind(card_point_cnt):
         return CardType.FOUR_OF_A_KIND
     elif _is_full_house(card_point_cnt):
         return CardType.FULL_HOUSE
-    elif _is_flush_basic(cards):
+    elif _is_flush_basic(sorted_cards):
         return CardType.FLUSH
-    elif _is_straight_basic(cards):
+    elif _is_straight_basic(sorted_cards):
         return CardType.STRAIGHT
     elif _is_three_of_a_kind(card_point_cnt):
         return CardType.THREE_OF_A_KIND
@@ -50,14 +50,15 @@ def card_type_of_5_cards(cards: List[Card]) -> CardType:
     return CardType.HIGH_CARD
 
 
-def _is_royal_flush(cards: List[Card]) -> bool:
+def _is_royal_flush(sorted_cards: List[Card]) -> bool:
     """Test if cards are royal flush."""
-    return _is_straight_flush_basic(cards) and cards[0].point() == 10
+    return _is_straight_flush_basic(sorted_cards) and \
+        sorted_cards[0].point() == 1 and sorted_cards[1].point() == 10
 
 
-def _is_straight_flush_basic(cards: List[Card]) -> bool:
+def _is_straight_flush_basic(sorted_cards: List[Card]) -> bool:
     """Only test if cards are straight flush but not judge higher level."""
-    return _is_flush_basic(cards) and _is_straight_basic(cards)
+    return _is_flush_basic(sorted_cards) and _is_straight_basic(sorted_cards)
 
 
 def _is_four_of_a_kind(card_point_cnt: Dict[int, int]) -> bool:
@@ -74,10 +75,10 @@ def _is_full_house(card_point_cnt: Dict[int, int]) -> bool:
     return max(list(card_point_cnt.values())) == 3
 
 
-def _is_flush_basic(cards: List[Card]) -> bool:
+def _is_flush_basic(sorted_cards: List[Card]) -> bool:
     """Only test if cards are flush but not judge higher level."""
     color = None
-    for item in cards:
+    for item in sorted_cards:
         if color is None:
             color = item.color()
         elif color != item.color():
@@ -85,15 +86,16 @@ def _is_flush_basic(cards: List[Card]) -> bool:
     return True
 
 
-def _is_straight_basic(cards: List[Card]) -> bool:
+def _is_straight_basic(sorted_cards: List[Card]) -> bool:
     """Only test if cards are straight but not judge higher level."""
-    min_point = None
-    for idx, item in enumerate(cards):
-        if min_point is None:
-            min_point = item.point()
-        elif item.point() != (idx + min_point()) % 13:
-            return False
-    return min_point <= 10
+    points = [item.point() for item in sorted_cards]
+    points_diff = [points[i] - points[i - 1] for i in range(len(points))]
+    if points[0] != 1:
+        for item in points_diff[1:]:
+            if item != 1:
+                return False
+        return True
+    return points == [1, 2, 3, 4, 5] or points == [1, 10, 11, 12, 13]
 
 
 def _is_three_of_a_kind(card_point_cnt: Dict[int, int]) -> bool:

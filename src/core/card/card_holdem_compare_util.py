@@ -28,7 +28,7 @@ def compare_2_group_in_same_type(
     group_2_sorted = sort_card_by_point(group_2)
     group_2_grouped = group_by_point(group_2_sorted)
     if card_type == CardType.ROYAL_FLUSH:
-        return 0
+        return 0  # Only 1 royal flush could exist.
     elif card_type == CardType.STRAIGHT_FLUSH:
         return _compare_straight_flush(group_1_sorted, group_2_sorted)
     elif card_type == CardType.FOUR_OF_A_KIND:
