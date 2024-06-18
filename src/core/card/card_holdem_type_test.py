@@ -1,7 +1,7 @@
 """
 Authors: guanchenglichina@qq.com (Guancheng Li)
 
-Defines card type of 5 cards.
+Unittest for card_holdem_type
 """
 
 from typing import List

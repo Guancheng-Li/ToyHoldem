@@ -15,54 +15,60 @@ class CardColor(enum.Enum):
     SPADE = 1
     CLUB = 2
     DIAMOND = 3
+    JOKER = 4
 
 
 class CardJoker(enum.Enum):
-    """The joker of a card."""
-    COLOR_JOKER = 0
-    BLACK_JOKER = 1
+    """The joker of a card, not used but for label."""
+    COLOR_JOKER = 14
+    BLACK_JOKER = 15
 
 
 class Card:
     """A card."""
-    def __init__(self, color: CardColor, point: int, joker=None):
+    def __init__(self, color: CardColor, point: int):
         self._color = None
         self._point = None
-        self._joker = None
         if color is not None:
             assert isinstance(color, CardColor)
             self._color = color
         if point is not None:
-            assert isinstance(point, int) and point <= 13 and point >= 1
+            assert isinstance(point, int) and point <= 15 and point >= 1
             self._point = point
-        if joker is not None:
-            assert isinstance(joker, CardJoker)
-            self._joker = joker
+        if point > 13:
+            # For joker, the point equals to CardJoker.Type.value
+            assert self._color == CardColor.JOKER
         self._unique_id = uuid.uuid4()
 
+    def color(self) -> CardColor:
+        return self._color
+
     def is_joker(self) -> bool:
-        return self._joker is not None
+        return self.color() == CardColor.JOKER
 
-    def color(self) -> Optional[CardColor]:
-        if not self.is_joker():
-            return self._color
-        return None
-
-    def point(self) -> Optional[int]:
-        if not self.is_joker():
-            return self._point
-        return None
+    def point(self) -> int:
+        return self._point
 
     def joker_type(self) -> Optional[CardJoker]:
-        if self.is_joker:
-            return self._joker
+        if self.is_joker():
+            return CardJoker.COLOR_JOKER if self._point == 14 else CardJoker.BLACK_JOKER
         return None
 
     def encode(self) -> str:
-        raise NotImplementedError('Not implemented yet.')
+        return f'{self.color().value}_{self._point}'
 
-    def decode(self) -> str:
-        raise NotImplementedError('Not implemented yet.')
+    def unique_id(self) -> str:
+        return self._unique_id
+
+    @classmethod
+    def decode(self, str) -> str:
+        tokens = str.split('_')
+        assert len(tokens) == 2
+        color_value = int(tokens[0])
+        assert color_value >= 0 and color_value <= 4
+        point = int(tokens[1])
+        assert point >= 1 and point <= 15
+        return Card(color_value, point)
 
 
 def CardPack():

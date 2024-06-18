@@ -1,7 +1,7 @@
 """
 Authors: guanchenglichina@qq.com (Guancheng Li)
 
-Help compare 5 cards.
+To compare 2 pairs of 5 cards.
 """
 
 from typing import Dict, List, Tuple
@@ -16,7 +16,7 @@ def compare_2_group(group_1: List[Card], group_2: List[Card]) -> int:
     group_2_type = card_type_of_5_cards(group_2)
     if group_1_type != group_2_type:
         return compare_2_diff_type(group_1_type, group_2_type)
-    return compare_2_group_in_same_type(group_1, group_2, group_1_type.value)
+    return compare_2_group_in_same_type(group_1, group_2, group_1_type)
 
 
 def compare_2_diff_type(type_1: CardType, type_2: CardType):
