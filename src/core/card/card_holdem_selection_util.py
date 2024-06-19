@@ -32,6 +32,7 @@ def select_high_score_cards(cards: List[Card]) -> List[Card]:
                 candidate.append(tmp_list)
     best_candidate = candidate[0]
     for item in candidate[1:]:
-        if compare_2_group_in_same_type(item, best_candidate, highest_type) > 0:
+        if compare_2_group_in_same_type(
+            item, best_candidate, highest_type) > 0:
             best_candidate = item
     return best_candidate

@@ -54,7 +54,8 @@ def compare_2_group_in_same_type(
     return 0  # Impossible to reach here.
 
 
-def _compare_straight(cards_1_sorted: List[Card], cards_2_sorted: List[Card]) -> int:
+def _compare_straight(
+    cards_1_sorted: List[Card], cards_2_sorted: List[Card]) -> int:
     if cards_1_sorted[0].point() != 1 and cards_2_sorted[0].point() != 1:
         if cards_1_sorted[0].point() > cards_2_sorted[0].point():
             return 1
@@ -76,7 +77,8 @@ def _compare_straight(cards_1_sorted: List[Card], cards_2_sorted: List[Card]) ->
     return 1 if cards_1_sorted[1].point() > cards_2_sorted[1].point() else -1
 
 
-def _separate_high_low_factor(group: Dict[int, int], target_count) -> Tuple[List[int], List[int]]:
+def _separate_high_low_factor(
+    group: Dict[int, int], target_count) -> Tuple[List[int], List[int]]:
     high = []
     low = []
     for key, value in group.items():
@@ -100,7 +102,9 @@ def _compare_sorted_list(points_1: List[int], points_2: List[int]) -> int:
 
 
 def _compare_with_priority(
-    cards_1_sorted: List[int], cards_2_sorted: List[int], factor_cnt: int) -> int:
+    cards_1_sorted: List[int],
+    cards_2_sorted: List[int],
+    factor_cnt: int) -> int:
     high_1, low_1 = _separate_high_low_factor(cards_1_sorted, factor_cnt)
     high_2, low_2 = _separate_high_low_factor(cards_2_sorted, factor_cnt)
     high_res = _compare_sorted_list(high_1, high_2)
@@ -109,7 +113,8 @@ def _compare_with_priority(
     return _compare_sorted_list(low_1, low_2)
 
 
-def _compare_reversed_points(cards_1_sorted: List[Card], cards_2_sorted: List[Card]) -> int:
+def _compare_reversed_points(
+    cards_1_sorted: List[Card], cards_2_sorted: List[Card]) -> int:
     points_1 = [card.point() for card in cards_1_sorted]
     points_1.reverse()
     points_2 = [card.point() for card in cards_2_sorted]

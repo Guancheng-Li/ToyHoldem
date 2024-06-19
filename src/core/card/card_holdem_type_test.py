@@ -15,7 +15,8 @@ from core.card.card_object import Card, CardColor, sort_card_by_point
 
 
 def _create_cards(color: List[int], point: List[int]) -> List[Card]:
-    assert len(color) == len(point), 'Cannot init cards with different size of color and point'
+    assert len(color) == len(point), \
+        'Cannot init cards with different size of color and point'
     cards = []
     for i in range(len(color)):
         cards.append(Card(CardColor(color[i]), point[i]))
@@ -152,7 +153,8 @@ class CardHoldemTypeTest(unittest.TestCase):
             if i in positive_index:
                 self.assertTrue(card_holdem_type._is_straight_basic(item))
             else:
-                self.assertFalse(card_holdem_type._is_straight_basic(item), msg=f'{i}')
+                self.assertFalse(
+                    card_holdem_type._is_straight_basic(item), msg=f'{i}')
 
         color_0 = [0, 1, 2, 3, 0]
         point_0 = [2, 3, 4, 5, 1]
@@ -206,9 +208,11 @@ class CardHoldemTypeTest(unittest.TestCase):
         positive_index = set([8, 9])
         for i, item in enumerate(self.sorted_cards_list):
             if i in positive_index:
-                self.assertTrue(card_holdem_type._is_straight_flush_basic(item))
+                self.assertTrue(
+                    card_holdem_type._is_straight_flush_basic(item))
             else:
-                self.assertFalse(card_holdem_type._is_straight_flush_basic(item))
+                self.assertFalse(
+                    card_holdem_type._is_straight_flush_basic(item))
 
     def test__is_royal_flush(self):
         positive_index = set([9])

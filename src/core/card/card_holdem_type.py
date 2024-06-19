@@ -26,7 +26,8 @@ class CardType(enum.Enum):
 
 def card_type_of_5_cards(cards: List[Card]) -> CardType:
     """Judge type of 5 cards."""
-    assert len(cards) == 5, 'Cannot judge cards type with cards num not equal to 5'
+    assert len(cards) == 5, \
+        'Cannot judge cards type with cards num not equal to 5'
     sorted_cards = sort_card_by_point(cards)
     card_point_cnt = group_by_point(sorted_cards)
     if _is_royal_flush(sorted_cards):

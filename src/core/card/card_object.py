@@ -51,7 +51,8 @@ class Card:
 
     def joker_type(self) -> Optional[CardJoker]:
         if self.is_joker():
-            return CardJoker.COLOR_JOKER if self._point == 14 else CardJoker.BLACK_JOKER
+            return CardJoker.COLOR_JOKER \
+                if self._point == 14 else CardJoker.BLACK_JOKER
         return None
 
     def encode(self) -> str:
