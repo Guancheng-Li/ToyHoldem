@@ -62,7 +62,7 @@ class Card:
         return self._unique_id
 
     @classmethod
-    def decode(self, str) -> str:
+    def decode(cls, str):
         tokens = str.split('_')
         assert len(tokens) == 2
         color_value = int(tokens[0])
@@ -73,19 +73,19 @@ class Card:
 
 
 def CardPack():
-    @classmethod
-    def cards_without_joker(cls) -> List[Card]:
+    @staticmethod
+    def cards_without_joker() -> List[Card]:
         cards = []
         for color in CardColor:
             for point in range(1, 14):
                 cards.append(Card(color, point))
         return cards
 
-    @classmethod
-    def cards_origin(cls) -> List[Card]:
+    @staticmethod
+    def cards_origin() -> List[Card]:
         cards = CardPack.cards_without_joker()
-        cards.append(Card(None, None, CardJoker.COLOR_JOKER))
-        cards.append(Card(None, None, CardJoker.BLACK_JOKER))
+        cards.append(Card(CardColor(4), 14))
+        cards.append(Card(CardColor(4), 15))
         return cards
 
 

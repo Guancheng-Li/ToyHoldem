@@ -12,7 +12,7 @@ class Role(enum.Enum):
     DEALER = 1
     SMALL_BLIND = 2
     BIG_BLIND = 3
-    # TODO(Guancheng Li): Maybe add viewer.
+    # TODO(Guancheng Li): Maybe add viewer or god_viewer.
 
 
 class PlayerState(enum.Enum):
@@ -23,8 +23,37 @@ class PlayerState(enum.Enum):
 
 class Player:
     """The player of game."""
-    def __init__(self, id: int, role: Role):
-        self._id = id
-        self._role = role
-        self._state = PlayerState.ALIVE
+    _NEXT_PLAYER_ID = 0
 
+    def __init__(self, ip: str):
+        self._id = Player._NEXT_PLAYER_ID
+        Player._NEXT_PLAYER_ID += 1
+        self._ip = ip
+        self._role = Role.NORMAL
+        self._state = PlayerState.ALIVE
+        self._score = 0
+
+    def role(self) -> Role:
+        return self._role
+
+    def is_alive(self) -> bool:
+        return self._state == PlayerState.ALIVE
+
+    def set_dealer(self):
+        self._role = Role.DEALER
+
+    def set_big_blind(self):
+        self._role = Role.BIG_BLIND
+
+    def set_small_blind(self):
+        self._role = Role.SMALL_BLIND
+
+    def add_score(self, score: int):
+        """End of game or initialize."""
+        self._score += score
+
+    def set_fold(self):
+        self._state = PlayerState.FOLD
+
+    def action(self):
+        # TODO
